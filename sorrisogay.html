@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora</title>
+
+<style>
+  body {
+    margin: 0;
+    background: #000;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #ff9500;
+  color: #000;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: 0.3px;
+  padding: 12px 16px;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+
+  /* TEXTO DISCRETO INFERIOR DIREITO */
+  .footer-text {
+    position: fixed;
+    bottom: 10px;
+    right: 12px;
+    color: white;
+    font-size: 10px;
+    opacity: 0.35;
+  }
+
+  .calculator {
+    width: 320px;
+    margin-top: 60px; /* evita colisão com header */
+  }
+
+  .display {
+    color: white;
+    font-size: 48px;
+    text-align: right;
+    padding: 20px;
+    min-height: 80px;
+  }
+
+  .small-text {
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 10px;
+  }
+
+  button {
+    height: 70px;
+    border-radius: 50%;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  button:active {
+    transform: scale(0.95);
+    filter: brightness(1.2);
+  }
+
+  .gray {
+    background: #a5a5a5;
+    color: black;
+  }
+
+  .dark {
+    background: #333;
+    color: white;
+  }
+
+  .orange {
+    background: #ff9500;
+    color: white;
+  }
+
+  .zero {
+    grid-column: span 2;
+    border-radius: 35px;
+    text-align: left;
+    padding-left: 28px;
+  }
+
+  @media (max-width: 400px) {
+    .calculator {
+      width: 90%;
+    }
+
+    .display {
+      font-size: 36px;
+    }
+
+    button {
+      height: 60px;
+      font-size: 20px;
+    }
+
+    .top-bar {
+      font-size: 14px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- HEADER PROFISSIONAL -->
+<div class="top-bar">
+  Calculadora do pedro codigos
+</div>
+
+<!-- CALCULADORA -->
+<div class="calculator">
+  <div class="display" id="display">0</div>
+
+  <div class="buttons">
+    <button class="gray" onclick="clearDisplay()">AC</button>
+    <button class="gray" onclick="backspace()">⌫</button>
+    <button class="gray" onclick="add('%')">%</button>
+    <button class="orange" onclick="add('÷')">÷</button>
+
+    <button class="dark" onclick="add('7')">7</button>
+    <button class="dark" onclick="add('8')">8</button>
+    <button class="dark" onclick="add('9')">9</button>
+    <button class="orange" onclick="add('×')">×</button>
+
+    <button class="dark" onclick="add('4')">4</button>
+    <button class="dark" onclick="add('5')">5</button>
+    <button class="dark" onclick="add('6')">6</button>
+    <button class="orange" onclick="add('−')">−</button>
+
+    <button class="dark" onclick="add('1')">1</button>
+    <button class="dark" onclick="add('2')">2</button>
+    <button class="dark" onclick="add('3')">3</button>
+    <button class="orange" onclick="add('+')">+</button>
+
+    <button class="dark zero" onclick="add('0')">0</button>
+    <button class="dark" onclick="add('.')">.</button>
+    <button class="orange" onclick="calculate()">=</button>
+  </div>
+</div>
+
+<!-- TEXTO OCULTO DISCRETO -->
+<div class="footer-text">Sorriso gay</div>
+
+<script>
+  let display = document.getElementById("display");
+  let justCalculated = false;
+
+  function add(value) {
+    if (justCalculated && !isOperator(value)) {
+      display.innerText = "";
+      display.classList.remove("small-text");
+      justCalculated = false;
+    }
+
+    if (display.innerText === "0" && !isOperator(value)) {
+      display.innerText = value;
+    } else {
+      display.innerText += value;
+    }
+
+    check67();
+  }
+
+  function isOperator(val) {
+    return ["+", "−", "×", "÷", "%"].includes(val);
+  }
+
+  function clearDisplay() {
+    display.innerText = "0";
+    display.classList.remove("small-text");
+    justCalculated = false;
+  }
+
+  function backspace() {
+    justCalculated = false;
+
+    let text = display.innerText;
+
+    if (text.length <= 1) {
+      display.innerText = "0";
+    } else {
+      display.innerText = text.slice(0, -1);
+    }
+
+    check67();
+  }
+
+  function calculate() {
+    if (display.innerText.includes("67")) {
+      display.innerText = "Você ganhou aura infinita";
+    } else {
+      display.innerText = "Já existe um usuário com esse resultado.";
+    }
+
+    display.classList.add("small-text");
+    justCalculated = true;
+  }
+
+  function check67() {
+    if (display.innerText.includes("67")) {
+      display.innerText = "Você ganhou aura infinita";
+      display.classList.add("small-text");
+      justCalculated = true;
+    }
+  }
+</script>
+
+</body>
+</html>
